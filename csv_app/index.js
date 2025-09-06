@@ -10,7 +10,7 @@ class Person {
   }
 
   saveToCSV() {
-    const content = `${this.name}, ${this.number}, ${this.email}`;
+    const content = `${this.name}, ${this.number}, ${this.email}\n`;
     try {
       appendFileSync("./contacts.csv", content);
       console.log(`${this.name} added`);
@@ -26,3 +26,23 @@ const readline = createInterface({
 });
 
 const readLineAsync = promisify(readline.question).bind(readline);
+
+const startApp = async () => {
+  let shouldContinue = true;
+
+  while (shouldContinue) {
+    const name = await readLineAsync("enter name: ");
+    const number = await readLineAsync("enter number: ");
+    const email = await readLineAsync("enter email: ");
+
+    const person = new Person(name, number, email);
+    person.saveToCSV();
+
+    const response = await readLineAsync("continue [y/n]");
+    shouldContinue = response.toLowerCase() === "y";
+  }
+
+  readline.close();
+};
+
+startApp();
