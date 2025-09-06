@@ -1,10 +1,20 @@
-import { writeFileSync } from "fs";
+import { createInterface } from "readline";
+import { promisify } from "util";
 
-const content = "test content";
+const readline = createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
-try {
-  writeFileSync("./text.txt", content);
-  console.log("success");
-} catch (err) {
-  console.log(err);
-}
+const readLineAsync = promisify(readline.question).bind(readline);
+
+(async () => {
+  try {
+    const name = await readLineAsync("what is yourname: ");
+    console.log(`hello ${name}`);
+  } catch (err) {
+    console.log(err.message);
+  } finally {
+    readline.close();
+  }
+})();
