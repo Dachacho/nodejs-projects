@@ -34,6 +34,10 @@ app.get("/hours", async (request, reply) => {
   return reply.view("hours.ejs", { operatingHours, days });
 });
 
+app.get("/about", async (request, reply) => {
+  return reply.view("about.ejs");
+});
+
 app.listen({ port: 3000 }, (err, address) => {
   if (err) throw err;
   console.log(`running on port: ${address}`);
