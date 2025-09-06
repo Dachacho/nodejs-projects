@@ -1,4 +1,6 @@
 import fastify from "fastify";
+import menuItems from "./menuItems.js";
+import operatingHours from "./operatingHours.js";
 
 const app = fastify();
 
@@ -9,11 +11,11 @@ app.get("/", async (request, reply) => {
 });
 
 app.get("/menu", async (request, reply) => {
-  return "TODO: menu page";
+  reply.send(menuItems);
 });
 
 app.get("/hours", async (request, reply) => {
-  return "TODO: hours page";
+  reply.send(operatingHours);
 });
 
 await app.listen({ port });
