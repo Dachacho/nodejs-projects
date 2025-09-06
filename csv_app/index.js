@@ -10,6 +10,7 @@ const csvWriter = createObjectCsvWriter({
     { id: "name", title: "NAME" },
     { id: "number", title: "NUMBER" },
     { id: "email", title: "EMAIL" },
+    { id: "created_at", title: "CREATED_AT" },
   ],
 });
 
@@ -23,7 +24,8 @@ class Person {
   async saveToCSV() {
     try {
       const { name, number, email } = this;
-      await csvWriter.writeRecords([{ name, number, email }]);
+      const created_at = new Date().toISOString().split("T")[0];
+      await csvWriter.writeRecords([{ name, number, email, created_at }]);
       console.log(`${this.name} added`);
     } catch (err) {
       console.log(err.message);
