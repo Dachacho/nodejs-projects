@@ -11,6 +11,8 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@fastify/view": "^9.1.0",
+    "ejs": "^3.1.6",
     "fastify": "^4.29.1"
   }
 }

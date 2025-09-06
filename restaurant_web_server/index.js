@@ -1,23 +1,40 @@
 import fastify from "fastify";
 import menuItems from "./menuItems.js";
 import operatingHours from "./operatingHours.js";
+import ejs from "ejs";
+import fastifyView from "@fastify/view";
+import { join } from "path";
 
 const app = fastify();
 
-const port = 3000;
+app.register(fastifyView, {
+  engine: { ejs },
+  root: join(process.cwd(), "views"),
+});
 
 app.get("/", async (request, reply) => {
-  return "Welcome to Fare is Fare!";
+  return reply.view("index.ejs", { name: "whats Fair is Fair" });
 });
 
 app.get("/menu", async (request, reply) => {
-  reply.send(menuItems);
+  return reply.view("menu.ejs", { menuItems });
 });
 
 app.get("/hours", async (request, reply) => {
-  reply.send(operatingHours);
+  const days = [
+    "monday",
+    "tuesday",
+    "wednsday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+  ];
+
+  return reply.view("hours.ejs", { operatingHours, days });
 });
 
-await app.listen({ port });
-
-console.log(`web server is listening at port: ${port}`);
+app.listen({ port: 3000 }, (err, address) => {
+  if (err) throw err;
+  console.log(`running on port: ${address}`);
+});
