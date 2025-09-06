@@ -1,6 +1,9 @@
 import { createInterface } from "readline";
 import { promisify } from "util";
 import { appendFileSync } from "fs";
+import prompt from "prompt";
+prompt.start();
+prompt.message = "";
 
 class Person {
   constructor(name = "", number = "", email = "") {
@@ -20,29 +23,22 @@ class Person {
   }
 }
 
-const readline = createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-const readLineAsync = promisify(readline.question).bind(readline);
-
 const startApp = async () => {
-  let shouldContinue = true;
+  const questions = [
+    { name: "name", description: "contact name" },
+    { name: "number", description: "contact number" },
+    { name: "email", description: "contact email" },
+  ];
 
-  while (shouldContinue) {
-    const name = await readLineAsync("enter name: ");
-    const number = await readLineAsync("enter number: ");
-    const email = await readLineAsync("enter email: ");
+  const responses = await prompt.get(questions);
+  const person = new Person(responses.name, responses.number, responses.email);
+  await person.saveToCSV();
 
-    const person = new Person(name, number, email);
-    person.saveToCSV();
+  const { again } = await prompt.get([
+    { name: "again", description: "continue? [y/n]" },
+  ]);
 
-    const response = await readLineAsync("continue [y/n]");
-    shouldContinue = response.toLowerCase() === "y";
-  }
-
-  readline.close();
+  if (again.toLowerCase() === "y") await startApp();
 };
 
 startApp();
