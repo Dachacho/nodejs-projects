@@ -34,11 +34,22 @@ class Person {
 const startApp = async () => {
   const questions = [
     { name: "name", description: "contact name" },
-    { name: "number", description: "contact number" },
-    { name: "email", description: "contact email" },
+    {
+      name: "number",
+      description: "contact number",
+      pattern: /^-?\d+(\.\d+)?$/,
+      message: "must be a valid number",
+    },
+    {
+      name: "email",
+      description: "contact email",
+      pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      message: "must be a valid email",
+    },
   ];
 
   const responses = await prompt.get(questions);
+
   const person = new Person(responses.name, responses.number, responses.email);
   await person.saveToCSV();
 
