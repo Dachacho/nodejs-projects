@@ -3,7 +3,7 @@
 operatingHours['defaultHours'] %>
 <section style="display: inline-flex; flex-direction: column; padding: 5px">
   <h2><%= day.toUpperCase() %></h2>
-  <div>
+  <div style="color: <%= day === correctDay ? 'red' : 'black' %>;">
     <% if (hoursObj.open) {%>
     <p>Open: <%= hoursObj.open %></p>
     <p>Closed: <%= hoursObj.closed %></p>

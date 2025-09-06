@@ -21,6 +21,8 @@ app.get("/menu", async (request, reply) => {
 });
 
 app.get("/hours", async (request, reply) => {
+  const today = new Date().getDay();
+
   const days = [
     "monday",
     "tuesday",
@@ -31,7 +33,9 @@ app.get("/hours", async (request, reply) => {
     "sunday",
   ];
 
-  return reply.view("hours.ejs", { operatingHours, days });
+  const correctDay = days[today - 1];
+
+  return reply.view("hours.ejs", { operatingHours, days, correctDay });
 });
 
 app.get("/about", async (request, reply) => {
